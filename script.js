@@ -20,3 +20,19 @@ function calculateResult() {
     display.value = 'Error';
   }
 }
+
+// Обработка нажатий клавиш
+document.addEventListener('keydown', function (event) {
+  const key = event.key;
+
+  // Проверка на разрешённые клавиши
+  if ((key >= '0' && key <= '9') || ['+', '-', '*', '/'].includes(key)) {
+    appendToDisplay(key);
+  } else if (key === 'Backspace') {
+    deleteLast();
+  } else if (key === 'Escape') {
+    clearDisplay();
+  } else if (key === 'Enter') {
+    calculateResult();
+  }
+});
