@@ -1,6 +1,13 @@
 function appendToDisplay(value) {
   const display = document.getElementById('display');
-  display.value += value;
+  const lastChar = display.value[display.value.length - 1];
+  const operators = ['+', '-', '*', '/'];
+
+  if (operators.includes(value) && operators.includes(lastChar)) {
+    display.value = display.value.slice(0, -1) + value;
+  } else {
+    display.value += value;
+  }
 }
 
 function clearDisplay() {
@@ -15,17 +22,18 @@ function deleteLast() {
 function calculateResult() {
   const display = document.getElementById('display');
   try {
-    display.value = eval(display.value) || '';
-  } catch {
+    const result = eval(display.value);
+    if (result === undefined || result === null || isNaN(result) || !isFinite(result)) {
+      throw new Error('Invalid result');
+    }
+    display.value = result;
+  } catch (error) {
     display.value = 'Error';
   }
 }
 
-// Обработка нажатий клавиш
 document.addEventListener('keydown', function (event) {
   const key = event.key;
-
-  // Проверка на разрешённые клавиши
   if ((key >= '0' && key <= '9') || ['+', '-', '*', '/'].includes(key)) {
     appendToDisplay(key);
   } else if (key === 'Backspace') {
