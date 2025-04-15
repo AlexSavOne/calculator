@@ -5,58 +5,92 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: linear-gradient(135deg, #74b9ff, #a29bfe);
+  background: linear-gradient(135deg, #6a89cc, #f4a261);
   margin: 0;
   font-family: 'Roboto', sans-serif;
 }
 
+.app {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  padding: 0 10px;
+}
+
 .calculator {
-  width: 320px;
-  background-color: #2d3436;
-  border-radius: 15px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  background-color: #34495e;
+  border-radius: 20px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+footer,
+header {
+  text-align: center;
+  color: #fff;
+  font-size: 1.2em;
+}
+
+footer {
+  margin-top: 20px;
+  font-size: 0.9em;
+  background-color: #2d3e50;
+  padding: 12px 0;
+  border-radius: 12px;
+}
+
+header {
+  background-color: #34495e;
+  padding: 18px 0;
+  border-radius: 12px;
+  margin-bottom: 20px;
 }
 
 #display {
-  width: 100%;
   height: 80px;
-  background-color: #636e72;
+  background-color: #2d3e50;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   text-align: right;
-  font-size: 2em;
+  font-size: 2.2em;
   color: #fff;
-  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  margin-bottom: 20px;
 }
 
 .buttons {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
+  gap: 12px;
   margin-top: 20px;
 }
 
 button {
   height: 70px;
-  font-size: 1.5em;
+  font-size: 1.6em;
   font-weight: bold;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
   transition: transform 0.1s, background-color 0.3s;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
 }
 
 button:first-child,
 button:nth-child(2) {
-  background-color: #d63031;
+  background-color: #e67e22;
   color: white;
 }
 
 button:first-child:hover,
 button:nth-child(2):hover {
-  background-color: #ff7675;
+  background-color: #f39c12;
 }
 
 button:nth-child(3),
@@ -64,8 +98,8 @@ button:nth-child(4),
 button:nth-child(8),
 button:nth-child(12),
 button:nth-child(16) {
-  background-color: #fdcb6e;
-  color: #2d3436;
+  background-color: #1abc9c;
+  color: #fff;
 }
 
 button:nth-child(3):hover,
@@ -73,12 +107,12 @@ button:nth-child(4):hover,
 button:nth-child(8):hover,
 button:nth-child(12):hover,
 button:nth-child(16):hover {
-  background-color: #ffeaa7;
+  background-color: #16a085;
 }
 
 button {
-  background-color: white;
-  color: #2d3436;
+  background-color: #ecf0f1;
+  color: #2c3e50;
 }
 
 button.zero {
@@ -87,4 +121,42 @@ button.zero {
 
 button:active {
   transform: scale(0.95);
+}
+
+@media (max-width: 375px) {
+  .calculator {
+    padding: 15px;
+  }
+
+  #display {
+    font-size: 1.8em;
+  }
+
+  button {
+    font-size: 1.4em;
+  }
+
+  footer {
+    font-size: 0.8em;
+  }
+
+  header {
+    font-size: 1.1em;
+  }
+}
+
+@media (max-width: 320px) {
+  .buttons {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+
+  button {
+    height: 60px;
+    font-size: 1.2em;
+  }
+
+  #display {
+    font-size: 1.6em;
+  }
 }
