@@ -1,11 +1,13 @@
 // src/App.jsx
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import Display from "./components/Display";
+import Button from "./components/Button";
 
 function App() {
   const [display, setDisplay] = useState("");
-
   const operators = ["+", "-", "*", "/"];
+  const appRef = useRef(null);
 
   const appendToDisplay = (value) => {
     const lastChar = display[display.length - 1];
@@ -16,13 +18,8 @@ function App() {
     }
   };
 
-  const clearDisplay = () => {
-    setDisplay("");
-  };
-
-  const deleteLast = () => {
-    setDisplay(display.slice(0, -1));
-  };
+  const clearDisplay = () => setDisplay("");
+  const deleteLast = () => setDisplay(display.slice(0, -1));
 
   const calculateResult = () => {
     try {
@@ -54,30 +51,44 @@ function App() {
     }
   };
 
+  useEffect(() => {
+    const ref = appRef.current;
+    if (ref) {
+      ref.focus();
+    }
+  }, []);
+
   return (
-    <div className="calculator" onKeyDown={handleKeyDown} tabIndex="0">
-      <input type="text" id="display" value={display} disabled />
+    <div
+      className="calculator"
+      ref={appRef}
+      onKeyDown={handleKeyDown}
+      tabIndex="0"
+    >
+      <Display value={display} />
       <div className="buttons">
-        <button onClick={clearDisplay}>C</button>
-        <button onClick={deleteLast}>DEL</button>
-        <button onClick={() => appendToDisplay("/")}>/</button>
-        <button onClick={() => appendToDisplay("*")}>*</button>
-        <button onClick={() => appendToDisplay("7")}>7</button>
-        <button onClick={() => appendToDisplay("8")}>8</button>
-        <button onClick={() => appendToDisplay("9")}>9</button>
-        <button onClick={() => appendToDisplay("-")}>-</button>
-        <button onClick={() => appendToDisplay("4")}>4</button>
-        <button onClick={() => appendToDisplay("5")}>5</button>
-        <button onClick={() => appendToDisplay("6")}>6</button>
-        <button onClick={() => appendToDisplay("+")}>+</button>
-        <button onClick={() => appendToDisplay("1")}>1</button>
-        <button onClick={() => appendToDisplay("2")}>2</button>
-        <button onClick={() => appendToDisplay("3")}>3</button>
-        <button onClick={calculateResult}>=</button>
-        <button className="zero" onClick={() => appendToDisplay("0")}>
-          0
-        </button>
-        <button onClick={() => appendToDisplay(".")}>.</button>
+        <Button label="C" onClick={clearDisplay} />
+        <Button label="DEL" onClick={deleteLast} />
+        <Button label="/" onClick={() => appendToDisplay("/")} />
+        <Button label="*" onClick={() => appendToDisplay("*")} />
+        <Button label="7" onClick={() => appendToDisplay("7")} />
+        <Button label="8" onClick={() => appendToDisplay("8")} />
+        <Button label="9" onClick={() => appendToDisplay("9")} />
+        <Button label="-" onClick={() => appendToDisplay("-")} />
+        <Button label="4" onClick={() => appendToDisplay("4")} />
+        <Button label="5" onClick={() => appendToDisplay("5")} />
+        <Button label="6" onClick={() => appendToDisplay("6")} />
+        <Button label="+" onClick={() => appendToDisplay("+")} />
+        <Button label="1" onClick={() => appendToDisplay("1")} />
+        <Button label="2" onClick={() => appendToDisplay("2")} />
+        <Button label="3" onClick={() => appendToDisplay("3")} />
+        <Button label="=" onClick={calculateResult} />
+        <Button
+          label="0"
+          onClick={() => appendToDisplay("0")}
+          className="zero"
+        />
+        <Button label="." onClick={() => appendToDisplay(".")} />
       </div>
     </div>
   );
