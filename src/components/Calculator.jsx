@@ -2,11 +2,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import Display from "./Display";
 import Button from "./Button";
+import History from "./History";
 import { evaluate } from "mathjs";
 
 const Calculator = () => {
   const [display, setDisplay] = useState("");
   const [error, setError] = useState(null);
+  const [history, setHistory] = useState([]);
   const operators = ["+", "-", "*", "/"];
   const appRef = useRef(null);
 
@@ -48,8 +50,18 @@ const Calculator = () => {
       const result = evaluate(formattedDisplay);
 
       if (isNaN(result) || !isFinite(result)) throw new Error("Invalid result");
+      
+      // Добавляем вычисление в историю
+      setHistory(prevHistory => [
+        {
+          expression: display,
+          result: result.toString()
+        },
+        ...prevHistory
+      ].slice(0, 10)); // Ограничиваем историю 10 последними вычислениями
+      
       setDisplay(result.toString());
-      setError(null); // После вычисления сбрасываем ошибку
+      setError(null);
     } catch (e) {
       handleError(e);
     }
@@ -85,33 +97,49 @@ const Calculator = () => {
     }
   };
 
+  const handleSelectResult = (result) => {
+    setDisplay(result);
+    setError(null);
+  };
+
+  const clearHistory = () => {
+    setHistory([]);
+  };
+
   useEffect(() => {
     appRef.current?.focus();
   }, []);
 
   return (
-    <div className="calculator" ref={appRef} onKeyDown={handleKeyDown} tabIndex="0">
-      <Display value={display} />
-      <div className="buttons">
-        <Button label="C" onClick={clearDisplay} />
-        <Button label="DEL" onClick={deleteLast} />
-        <Button label="/" onClick={() => appendToDisplay("/")} />
-        <Button label="*" onClick={() => appendToDisplay("*")} />
-        <Button label="7" onClick={() => appendToDisplay("7")} />
-        <Button label="8" onClick={() => appendToDisplay("8")} />
-        <Button label="9" onClick={() => appendToDisplay("9")} />
-        <Button label="-" onClick={() => appendToDisplay("-")} />
-        <Button label="4" onClick={() => appendToDisplay("4")} />
-        <Button label="5" onClick={() => appendToDisplay("5")} />
-        <Button label="6" onClick={() => appendToDisplay("6")} />
-        <Button label="+" onClick={() => appendToDisplay("+")} />
-        <Button label="1" onClick={() => appendToDisplay("1")} />
-        <Button label="2" onClick={() => appendToDisplay("2")} />
-        <Button label="3" onClick={() => appendToDisplay("3")} />
-        <Button label="=" onClick={calculateResult} />
-        <Button label="0" onClick={() => appendToDisplay("0")} className="zero" />
-        <Button label="," onClick={() => appendToDisplay(",")} />
+    <div className="calculator-container">
+      <div className="calculator" ref={appRef} onKeyDown={handleKeyDown} tabIndex="0">
+        <Display value={display} />
+        <div className="buttons">
+          <Button label="C" onClick={clearDisplay} />
+          <Button label="DEL" onClick={deleteLast} />
+          <Button label="/" onClick={() => appendToDisplay("/")} />
+          <Button label="*" onClick={() => appendToDisplay("*")} />
+          <Button label="7" onClick={() => appendToDisplay("7")} />
+          <Button label="8" onClick={() => appendToDisplay("8")} />
+          <Button label="9" onClick={() => appendToDisplay("9")} />
+          <Button label="-" onClick={() => appendToDisplay("-")} />
+          <Button label="4" onClick={() => appendToDisplay("4")} />
+          <Button label="5" onClick={() => appendToDisplay("5")} />
+          <Button label="6" onClick={() => appendToDisplay("6")} />
+          <Button label="+" onClick={() => appendToDisplay("+")} />
+          <Button label="1" onClick={() => appendToDisplay("1")} />
+          <Button label="2" onClick={() => appendToDisplay("2")} />
+          <Button label="3" onClick={() => appendToDisplay("3")} />
+          <Button label="=" onClick={calculateResult} />
+          <Button label="0" onClick={() => appendToDisplay("0")} className="zero" />
+          <Button label="," onClick={() => appendToDisplay(",")} />
+        </div>
       </div>
+      <History 
+        history={history} 
+        onSelectResult={handleSelectResult} 
+        onClearHistory={clearHistory}
+      />
     </div>
   );
 };
